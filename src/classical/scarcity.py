@@ -2,13 +2,13 @@ import numpy as np
 from typing import List
 
 # TODO: Increase dimension
-def prodduction_possibilities_curve(production: List[int], mode='linear'):
+def prodduction_possibilities_curve(production: List[List[int]], mode='linear'):
     n = len(production)
 
     if n == 0:
         raise ValueError("No production at all, empty list can not be productions")
     else:
-        validate_production(production)
+        __validate_production(production)
     
     if n == 1:
         return production
@@ -18,7 +18,7 @@ def prodduction_possibilities_curve(production: List[int], mode='linear'):
     
     return -production[0]/production[1]
 
-def validate_production(production: List[int]):
+def __validate_production(production: List[int]):
     n = len(production)
 
     for i in range(n):
