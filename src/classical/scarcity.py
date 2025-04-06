@@ -2,7 +2,7 @@ import numpy as np
 from typing import List
 
 # TODO: Increase dimension
-def prodduction_possibilities_curve(production: List[List[int]], mode='linear'):
+def production_slope(production: List[int], mode='linear'):
     n = len(production)
 
     if n == 0:
@@ -17,6 +17,26 @@ def prodduction_possibilities_curve(production: List[List[int]], mode='linear'):
         raise NotImplementedError("Solution for dimension above 2 is not implemented")
     
     return -production[0]/production[1]
+
+
+# TODO: Complete calculation
+def production_probabilities_curve(production_combination):
+    n = len(production_combination)
+    
+    # validate
+    if n == 0:
+        raise ValueError("List is empty, there is no production here")
+    
+    if n == 1:
+        raise ValueError("There is only one worker who produce")
+    
+    dim = len(production_combination[0])
+    if dim <= 1:
+        raise ValueError("In this economy system, number of distinct production items is less than 2, not valid for production probabilities curve calculation")
+    
+
+    
+    return
 
 def __validate_production(production: List[int]):
     n = len(production)
