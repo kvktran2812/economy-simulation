@@ -1,5 +1,6 @@
 import numpy as np
 from typing import List
+import matplotlib.pyplot as plt
 
 # TODO: Increase dimension
 def production_slope(production: List[int], mode='linear'):
@@ -19,8 +20,8 @@ def production_slope(production: List[int], mode='linear'):
     return -production[0]/production[1]
 
 
-# TODO: Complete calculation
-def production_probabilities_curve(production_combination: List[List[int]]):
+# TODO: Add calculation for more than 3 products
+def ppc(production_combination: List[List[int]]) -> np.ndarray:
     n = len(production_combination)
     
     # validate
@@ -33,7 +34,7 @@ def production_probabilities_curve(production_combination: List[List[int]]):
     if n > 2:
         raise NotImplementedError("Not support for more than 2 products")
     
-    # Check if array has same dimension
+    # Check if every array has same dimension
     dim = len(production_combination[0])
     for p in production_combination:
         if len(p) != dim:
@@ -52,6 +53,36 @@ def production_probabilities_curve(production_combination: List[List[int]]):
         ret[1,i+1] = second_product_sum
 
     return ret
+
+
+def ppc_plot(production_combination: List[List[int]], good_name_1: str = "Good Name 1", good_name_2: str = "Good Name 2") -> None:
+    n = len(production_combination)
+
+    if n <=1 :
+        raise ValueError("Not supported with less than one product")
+    
+    if n > 3:
+        raise ValueError("Not supported with more than 3 products")
+    
+    ppc_result = production_probabilities_curve(production_combination)
+
+    # Plot PPC curve
+    plt.plot(ppc_result[0], ppc_result[1], color='red')
+    plt.fill_between(ppc_result[0], ppc_result[1], 0, color='lightblue', alpha=0.7)
+
+    # Show extreme points
+    plt.scatter(ppc_result[0], ppc_result[1], color='red', label='Extreme Points')
+
+
+    # Labels and title
+    plt.xlabel(good_name_2)
+    plt.ylabel(good_name_1)
+    plt.title('Production Possibilities Curve (PPC)')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+    
+    return
 
 def __validate_production(production: List[int]):
     n = len(production)
