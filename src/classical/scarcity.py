@@ -64,7 +64,7 @@ def ppc_plot(production_combination: List[List[int]], good_name_1: str = "Good N
     if n > 3:
         raise ValueError("Not supported with more than 3 products")
     
-    ppc_result = production_probabilities_curve(production_combination)
+    ppc_result = ppc(production_combination)
 
     # Plot PPC curve
     plt.plot(ppc_result[0], ppc_result[1], color='red')
