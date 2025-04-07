@@ -20,7 +20,7 @@ def production_slope(production: List[int], mode='linear'):
 
 
 # TODO: Complete calculation
-def production_probabilities_curve(production_combination):
+def production_probabilities_curve(production_combination: List[List[int]]):
     n = len(production_combination)
     
     # validate
@@ -28,19 +28,34 @@ def production_probabilities_curve(production_combination):
         raise ValueError("List is empty, there is no production here")
     
     if n == 1:
-        raise ValueError("There is only one worker who produce")
+        raise ValueError("There is only one product here")
     
+    if n > 2:
+        raise NotImplementedError("Not support for more than 2 products")
+    
+    # Check if array has same dimension
     dim = len(production_combination[0])
-    if dim <= 1:
-        raise ValueError("In this economy system, number of distinct production items is less than 2, not valid for production probabilities curve calculation")
+    for p in production_combination:
+        if len(p) != dim:
+            raise ValueError("List of production don't have the same size")
     
+    first_product_sum = sum(production_combination[0])
+    second_product_sum = 0
+    ret = np.zeros((n, dim+1))
+    ret[0,0] = first_product_sum
 
-    
-    return
+    for i in range(dim):
+        first_product_sum -= production_combination[0][i]
+        second_product_sum += production_combination[1][i]
+        print(first_product_sum, second_product_sum)
+        ret[0,i+1] = first_product_sum
+        ret[1,i+1] = second_product_sum
+
+    return ret
 
 def __validate_production(production: List[int]):
     n = len(production)
 
     for i in range(n):
-        if production[i] <= 0:
-            raise ValueError(f"Production can not be less than or equal to zero. Production of index {i} is {production[i]}")
+        if production[i] < 0:
+            raise ValueError(f"Production can not be less than zero. Production of index {i} is {production[i]}")
