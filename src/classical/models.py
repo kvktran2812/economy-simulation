@@ -1,4 +1,5 @@
 from abc import ABC
+from scarcity import *
 
 
 class Worker(ABC):
@@ -24,3 +25,9 @@ class ProductionWorker(Worker):
         print("Worker produce:")
         for i in range(n):
             print(f"- {self.items[i]}: {self.production[i]}")
+
+    def ppc(self):
+        return ppc(self.production)
+    
+    def ppc_plot(self):
+        ppc_plot(self.production)
