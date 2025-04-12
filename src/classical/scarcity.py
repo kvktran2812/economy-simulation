@@ -20,6 +20,15 @@ def production_slope(production: List[int], mode='linear'):
     return -production[0]/production[1]
 
 
+def sort_according_to_cost(production_combination):
+    t_production = np.array(production_combination).T
+    oc = t_production[:, 0] / t_production[:, 1]  # Compute opportunity cost
+    sorted_indices = np.argsort(oc)     # Get sorted indices
+    sorted_production = t_production[sorted_indices].T
+
+    return sorted_production
+
+
 # TODO: Add calculation for more than 3 products
 def ppc(production_combination: List[List[int]]) -> np.ndarray:
     n = len(production_combination)
@@ -39,16 +48,18 @@ def ppc(production_combination: List[List[int]]) -> np.ndarray:
     for p in production_combination:
         if len(p) != dim:
             raise ValueError("List of production don't have the same size")
+        
+    t_production = np.array(production_combination)
+    sorted_production = sort_according_to_cost(t_production)
     
-    first_product_sum = sum(production_combination[0])
+    first_product_sum = sum(sorted_production[0])
     second_product_sum = 0
     ret = np.zeros((n, dim+1))
     ret[0,0] = first_product_sum
 
     for i in range(dim):
-        first_product_sum -= production_combination[0][i]
-        second_product_sum += production_combination[1][i]
-        print(first_product_sum, second_product_sum)
+        first_product_sum -= sorted_production[0][i]
+        second_product_sum += sorted_production[1][i]
         ret[0,i+1] = first_product_sum
         ret[1,i+1] = second_product_sum
 
