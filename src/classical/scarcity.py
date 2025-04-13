@@ -2,6 +2,13 @@ import numpy as np
 from typing import List
 import matplotlib.pyplot as plt
 
+#############################################
+# TODO:
+# List of next thing that might be interesting to add to this module
+# - Production Possibilities Curve for more than 3 products ? (Might be interested but not use much in real-life scenario)
+
+
+#############################################
 
 def sort_according_to_cost(production_combination):
     t_production = np.array(production_combination).T

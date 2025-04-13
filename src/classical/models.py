@@ -27,7 +27,7 @@ class ProductionWorker(Worker):
             print(f"- {self.items[i]}: {self.production[i]}")
 
     def ppc(self):
-        return ppc(self.production)
+        return ppc_2goods(self.production)
     
     def ppc_plot(self):
         ppc_plot(self.production)
