@@ -2,23 +2,6 @@ import numpy as np
 from typing import List
 import matplotlib.pyplot as plt
 
-# TODO: Increase dimension
-def production_slope(production: List[int], mode='linear'):
-    n = len(production)
-
-    if n == 0:
-        raise ValueError("No production at all, empty list can not be productions")
-    else:
-        __validate_production(production)
-    
-    if n == 1:
-        return production
-    
-    if n > 2:
-        raise NotImplementedError("Solution for dimension above 2 is not implemented")
-    
-    return -production[0]/production[1]
-
 
 def sort_according_to_cost(production_combination):
     t_production = np.array(production_combination).T
@@ -29,35 +12,22 @@ def sort_according_to_cost(production_combination):
     return sorted_production
 
 
-# TODO: Add calculation for more than 3 products
-def ppc(production_combination: List[List[int]]) -> np.ndarray:
-    n = len(production_combination)
-    
-    # validate
-    if n == 0:
-        raise ValueError("List is empty, there is no production here")
-    
-    if n == 1:
-        raise ValueError("There is only one product here")
-    
-    if n > 2:
-        raise NotImplementedError("Not support for more than 2 products")
-    
-    # Check if every array has same dimension
-    dim = len(production_combination[0])
-    for p in production_combination:
-        if len(p) != dim:
-            raise ValueError("List of production don't have the same size")
+def ppc_2goods(good1: List[float], good2: List[float]) -> np.ndarray:
+    n1 = len(good1)
+    n2 = len(good2)
+
+    if n1 != n2:
+        raise ValueError("Size of 2 list of goods is not the same")
         
-    t_production = np.array(production_combination)
-    sorted_production = sort_according_to_cost(t_production)
+    production = np.array([good1, good2])
+    sorted_production = sort_according_to_cost(production)
     
     first_product_sum = sum(sorted_production[0])
     second_product_sum = 0
-    ret = np.zeros((n, dim+1))
+    ret = np.zeros((2, n1+1))
     ret[0,0] = first_product_sum
 
-    for i in range(dim):
+    for i in range(n1):
         first_product_sum -= sorted_production[0][i]
         second_product_sum += sorted_production[1][i]
         ret[0,i+1] = first_product_sum
@@ -66,16 +36,8 @@ def ppc(production_combination: List[List[int]]) -> np.ndarray:
     return ret
 
 
-def ppc_plot(production_combination: List[List[int]], good_name_1: str = "Good Name 1", good_name_2: str = "Good Name 2") -> None:
-    n = len(production_combination)
-
-    if n <=1 :
-        raise ValueError("Not supported with less than one product")
-    
-    if n > 3:
-        raise ValueError("Not supported with more than 3 products")
-    
-    ppc_result = ppc(production_combination)
+def ppc_plot(good1: List[float], good2: List[float], good_name_1: str = "Good Name 1", good_name_2: str = "Good Name 2") -> None:
+    ppc_result = ppc_2goods(good1, good2)
 
     # Plot PPC curve
     plt.plot(ppc_result[0], ppc_result[1], color='red')
@@ -94,10 +56,3 @@ def ppc_plot(production_combination: List[List[int]], good_name_1: str = "Good N
     plt.show()
     
     return
-
-def __validate_production(production: List[int]):
-    n = len(production)
-
-    for i in range(n):
-        if production[i] < 0:
-            raise ValueError(f"Production can not be less than zero. Production of index {i} is {production[i]}")
